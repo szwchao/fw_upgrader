@@ -1,0 +1,6 @@
+backup/
+*.pyc
+*.log
+build/
+dist/
+MPC/
