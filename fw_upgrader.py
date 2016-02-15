@@ -6,7 +6,6 @@ import threading
 import tools.tftpy as tftpy
 from tools.progressbar import Bar, ETA, FileTransferSpeed, Percentage, ProgressBar, RotatingMarker
 import logging
-import getopt
 import argparse
 from fw import Firmware_Downloader
 from tools.colorama import init
@@ -22,7 +21,7 @@ class MyError(Exception):
 
 def run(server_ip, client_ip):
     f = Firmware_Downloader(url=client_ip, server_ip=server_ip)
-    comment('Old version is: ' + f.get_version())
+    comment('Old firmware version is: ' + f.get_version())
 
     widgets = ['Transferring: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ', FileTransferSpeed()]
     pbar = ProgressBar(widgets=widgets, maxval=3670000).start()
@@ -37,7 +36,7 @@ def run(server_ip, client_ip):
         pbar.finish()
         f.reboot()
         f.confirm()
-        comment('New version is: ' + f.get_version())
+        comment('New firmware version is: ' + f.get_version())
     finally:
         server.stop(now=False)
         server_thread.join()
@@ -57,7 +56,7 @@ def main(args):
         server_ip = args.server
     else:
         server_ip = guess_local_ip()
-    client_ip = args.client
+    client_ip = args.controller
     checkip(server_ip)
     checkip(client_ip)
 
