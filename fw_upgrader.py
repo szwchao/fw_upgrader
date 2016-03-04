@@ -19,24 +19,27 @@ def comment(str):
 class MyError(Exception):
     pass
 
-def run(server_ip, client_ip):
-    f = Firmware_Downloader(url=client_ip, server_ip=server_ip)
+def run(server_ip, client_ip, timeout, web_response_timeout, reboot):
+    f = Firmware_Downloader(url=client_ip, server_ip=server_ip, response_timeout = web_response_timeout)
     comment('Old firmware version is: ' + f.get_version())
 
     widgets = ['Transferring: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ', FileTransferSpeed()]
     pbar = ProgressBar(widgets=widgets, maxval=3670000).start()
 
     server = tftpy.TftpServer('.', hook=pbar.update)
-    server_thread = threading.Thread(target=server.listen, kwargs={'listenip': server_ip, 'listenport': 69, 'timeout': 10})
+    server_thread = threading.Thread(target=server.listen, kwargs={'listenip': server_ip, 'listenport': 69, 'timeout': timeout})
     server_thread.start()
     try:
         server.is_running.wait()
         f.download()
         f.wait()
         pbar.finish()
-        f.reboot()
-        f.confirm()
-        comment('New firmware version is: ' + f.get_version())
+        if reboot:
+            f.reboot()
+            f.confirm()
+            comment('New firmware version is: ' + f.get_version())
+        else:
+            comment('Download complete, please reboot!')
     finally:
         server.stop(now=False)
         server_thread.join()
@@ -71,7 +74,7 @@ def main(args):
         tftpy.setLogLevel(logging.INFO)
     elif args.loglevel == 2:
         tftpy.setLogLevel(logging.DEBUG)
-    run(server_ip, client_ip)
+    run(server_ip, client_ip, args.timeout, args.web_response_timeout, args.reboot)
 
 if __name__ == '__main__':
     des = 'a tool which can help to download firmware to DC'
@@ -79,6 +82,9 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--server', type=str, help='server ip')
     parser.add_argument('-c', '--controller', type=str, help='controller ip', required=True)
     parser.add_argument('-l', '--loglevel', type=int, default=0, help='log level, 0=no log, 1=info, 2=debug')
+    parser.add_argument('-t', '--timeout', type=int, default=10, help='timeout for tftp server')
+    parser.add_argument('-w', '--web_response_timeout', type=int, default=20, help='timeout for web response')
+    parser.add_argument('-r', '--noreboot', action='store_false', help='reboot controller if enable')
  
     args = parser.parse_args();
     main(args)

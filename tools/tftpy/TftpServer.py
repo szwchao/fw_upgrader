@@ -69,8 +69,7 @@ class TftpServer(TftpSession):
         # Don't use new 2.5 ternary operator yet
         # listenip = listenip if listenip else '0.0.0.0'
         if not listenip: listenip = '0.0.0.0'
-        log.info("Server requested on ip %s, port %s"
-                % (listenip, listenport))
+        log.info("Server requested on ip %s, port %s" % (listenip, listenport))
         try:
             # FIXME - sockets should be non-blocking
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -78,6 +77,8 @@ class TftpServer(TftpSession):
             _, self.listenport = self.sock.getsockname()
         except socket.error, err:
             # Reraise it for now.
+            self.sock.close()
+            self.is_running.set()
             raise TftpException, "can not listen to this ip %s" % (listenip)
 
         self.is_running.set()

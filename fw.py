@@ -29,7 +29,8 @@ class Firmware_Downloader(object):
     password = 'admin'
     cmd = {'form_id':'firmware_update', 'reboot_value':'', 'tftp_server_ip_address':'192.168.0.1', 'submit': 'Start', 'reboot': 'Reboot'}
 
-    def __init__(self, url=None, server_ip='192.168.0.1'):
+    def __init__(self, url=None, server_ip='192.168.0.1', response_timeout=20):
+        self.response_timeout = response_timeout
         self.url = url if url else self.guess_ip()
         self.cmd['tftp_server_ip_address'] = server_ip
 
@@ -51,7 +52,7 @@ class Firmware_Downloader(object):
         # self.auth(posturl)
         data = urlencode(params)
         req = request.Request(posturl, data)
-        response = request.urlopen(req, timeout=20)
+        response = request.urlopen(req, timeout=self.response_timeout)
 
     def get(self, url):
         '''
@@ -61,7 +62,7 @@ class Firmware_Downloader(object):
         :return:
         '''
         self.auth(url)
-        return request.urlopen(url, timeout=20).read()
+        return request.urlopen(url, timeout=self.response_timeout).read()
 
     def guess_ip(self):
         begin_ip = "http://192.168.0."
