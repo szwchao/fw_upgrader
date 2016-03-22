@@ -9,9 +9,9 @@ from .firmware import Firmware_Downloader
 
 py3 = sys.version_info[0] >= 3
 if py3:
-    import lib.tftpy as tftpy
+    from .lib.tftpy import setLogLevel, TftpServer 
 else:
-    import lib.tftpy2 as tftpy
+    from .lib.tftpy2 import setLogLevel, TftpServer 
 
 def comment(str):
     print(str)
@@ -20,7 +20,7 @@ class MyError(Exception):
     pass
 
 def fw_upgrader(path, server_ip, client_ip, timeout=10, web_response_timeout=20, reboot=True, loglevel=logging.NOTSET):
-    tftpy.setLogLevel(loglevel)
+    setLogLevel(loglevel)
     checkip(server_ip)
     checkip(client_ip)
     comment("server ip: %s" % (server_ip))
@@ -32,7 +32,7 @@ def fw_upgrader(path, server_ip, client_ip, timeout=10, web_response_timeout=20,
     widgets = ['Transferring: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ', FileTransferSpeed()]
     pbar = ProgressBar(widgets=widgets, maxval=3670000).start()
 
-    server = tftpy.TftpServer(path, hook=pbar.update)
+    server = TftpServer(path, hook=pbar.update)
     server_thread = threading.Thread(target=server.listen, kwargs={'listenip': server_ip, 'listenport': 69, 'timeout': timeout})
     server_thread.start()
     try:

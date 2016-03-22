@@ -4,4 +4,3 @@ Features:
 
 - TFTP server
 - Initiate firmware download command to controller, check downloading status.
--
