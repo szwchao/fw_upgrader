@@ -14,10 +14,24 @@ DEF_TFTP_PORT = 69
 # A hook for deliberately introducing delay in testing.
 DELAY_BLOCK = 0
 
+def setup_logger(logger_name, log_file, level=logging.DEBUG):
+    l = logging.getLogger(logger_name)
+    formatter = logging.Formatter('%(asctime)s %(filename)s [line:%(lineno)d]    %(message)s')
+    fileHandler = logging.FileHandler(log_file, mode='w', encoding='UTF-8')
+    fileHandler.setFormatter(formatter)
+    # streamHandler = logging.StreamHandler()
+    # streamHandler.setFormatter(formatter)
+
+    l.setLevel(level)
+    l.addHandler(fileHandler)
+    # l.addHandler(streamHandler)  
+
 # Initialize the logger.
-logging.basicConfig(filename='log.log', filemode='w')
+# logging.basicConfig(filename='log.log', filemode='w')
 # The logger used by this library. Feel free to clobber it with your own, if you like, as
 # long as it conforms to Python's logging.
+setup_logger('tftpy', 'tftpy.log')
+# setup_logger('log2', r'C:\temp\log2.log')
 log = logging.getLogger('tftpy')
 
 def tftpassert(condition, msg):
@@ -26,13 +40,12 @@ def tftpassert(condition, msg):
     with the message passed. This just makes the code throughout cleaner
     by refactoring."""
     if not condition:
-        raise TftpException, msg
+        raise TftpException(msg)
 
 def setLogLevel(level):
     """This function is a utility function for setting the internal log level.
     The log level defaults to logging.NOTSET, so unwanted output to stdout is
     not created."""
-    global log
     log.setLevel(level)
 
 class TftpErrors(object):

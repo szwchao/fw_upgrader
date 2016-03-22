@@ -6,10 +6,10 @@ TftpShared."""
 import socket, os, time
 import select
 import threading
-from TftpShared import *
-from TftpPacketTypes import *
-from TftpPacketFactory import TftpPacketFactory
-from TftpContexts import TftpContextServer
+from .TftpShared import *
+from .TftpPacketTypes import *
+from .TftpPacketFactory import TftpPacketFactory
+from .TftpContexts import TftpContextServer
 
 class TftpServer(TftpSession):
     """This class implements a tftp server object. Run the listen() method to
@@ -39,23 +39,23 @@ class TftpServer(TftpSession):
 
         if self.dyn_file_func:
             if not callable(self.dyn_file_func):
-                raise TftpException, "A dyn_file_func supplied, but it is not callable."
+                raise TftpException("A dyn_file_func supplied, but it is not callable.")
         elif os.path.exists(self.root):
             log.debug("tftproot %s does exist", self.root)
             if not os.path.isdir(self.root):
-                raise TftpException, "The tftproot must be a directory."
+                raise TftpException("The tftproot must be a directory.")
             else:
                 log.debug("tftproot %s is a directory", self.root)
                 if os.access(self.root, os.R_OK):
                     log.debug("tftproot %s is readable", self.root)
                 else:
-                    raise TftpException, "The tftproot must be readable"
+                    raise TftpException("The tftproot must be readable")
                 if os.access(self.root, os.W_OK):
                     log.debug("tftproot %s is writable", self.root)
                 else:
                     log.warning("The tftproot %s is not writable" % self.root)
         else:
-            raise TftpException, "The tftproot does not exist."
+            raise TftpException("The tftproot does not exist.")
 
     def listen(self,
                listenip="",
@@ -75,11 +75,11 @@ class TftpServer(TftpSession):
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.sock.bind((listenip, listenport))
             _, self.listenport = self.sock.getsockname()
-        except socket.error, err:
+        except socket.error as err:
             # Reraise it for now.
             self.sock.close()
             self.is_running.set()
-            raise TftpException, "can not listen to this ip %s" % (listenip)
+            raise TftpException("can not listen to this ip %s" % (listenip))
 
         self.is_running.set()
 
@@ -133,7 +133,7 @@ class TftpServer(TftpSession):
                     # which should safely work through NAT.
                     key = "%s:%s" % (raddress, rport)
 
-                    if not self.sessions.has_key(key):
+                    if not key in self.sessions:
                         log.debug("Creating new server context for "
                                      "session key = %s", key)
                         self.sessions[key] = TftpContextServer(raddress,
@@ -143,7 +143,7 @@ class TftpServer(TftpSession):
                                                                self.dyn_file_func)
                         try:
                             self.sessions[key].start(buffer)
-                        except TftpException, err:
+                        except TftpException as err:
                             deletion_list.append(key)
                             log.error("Fatal exception thrown from "
                                       "session %s: %s" % (key, str(err)))
@@ -166,7 +166,7 @@ class TftpServer(TftpSession):
                                 if self.sessions[key].state == None:
                                     log.info("Successful transfer.")
                                     deletion_list.append(key)
-                            except TftpException, err:
+                            except TftpException as err:
                                 deletion_list.append(key)
                                 log.error("Fatal exception thrown from "
                                           "session %s: %s"
@@ -184,7 +184,7 @@ class TftpServer(TftpSession):
             for key in self.sessions:
                 try:
                     self.sessions[key].checkTimeout(now)
-                except TftpTimeout, err:
+                except TftpTimeout as err:
                     log.error(str(err))
                     self.sessions[key].retry_count += 1
                     if self.sessions[key].retry_count >= TIMEOUT_RETRIES:
@@ -199,7 +199,7 @@ class TftpServer(TftpSession):
             for key in deletion_list:
                 log.info('')
                 log.info("Session %s complete" % key)
-                if self.sessions.has_key(key):
+                if key in self.sessions:
                     log.debug("Gathering up metrics from session before deleting")
                     self.sessions[key].end()
                     metrics = self.sessions[key].metrics

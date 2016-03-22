@@ -3,8 +3,6 @@
 import os, sys
 import time
 import socket
-from tools.colorama import init
-from tools.colorama import Fore, Back, Style
 
 if sys.version_info < (2, 7):
     raise RuntimeError('At least Python 2.7 is required')
@@ -15,10 +13,10 @@ except ImportError:#python3
     from urllib.parse import urlencode as urlencode
     import urllib.request as request
 
-DEFAULT_URL = "192.168.0.2"
-
 def info(str):
-    print(Fore.RED + str)
+    # print('\033[31m' + str) # red
+    # print('\033[30m') # and reset to default color
+    print(str)
 
 class FwError(Exception):
     def __init__(self, message):
@@ -31,7 +29,8 @@ class Firmware_Downloader(object):
 
     def __init__(self, url=None, server_ip='192.168.0.1', response_timeout=20):
         self.response_timeout = response_timeout
-        self.url = url if url else self.guess_ip()
+        # self.url = url if url else self.guess_ip()
+        self.url = "http://" + url
         self.cmd['tftp_server_ip_address'] = server_ip
 
     def auth(self, url):
@@ -51,8 +50,12 @@ class Firmware_Downloader(object):
         '''
         # self.auth(posturl)
         data = urlencode(params)
-        req = request.Request(posturl, data)
-        response = request.urlopen(req, timeout=self.response_timeout)
+        binary_data = data.encode('utf-8')
+        req = request.Request(posturl, binary_data)
+        response = request.urlopen(req, timeout=3)
+        # data = urlencode(params)
+        # req = request.Request(posturl, data)
+        # response = request.urlopen(req, timeout=self.response_timeout)
 
     def get(self, url):
         '''
@@ -88,10 +91,10 @@ class Firmware_Downloader(object):
         url = self.url + "/firmware_update.html"
         result = self.get(url)
         # '<div style="border-bottom:2px solid #D3D3D3; padding:0px 0px 5px 0px; margin-bottom:15px"><a href="index.html">Home</a> &middot; <a href="firmware_update.html">Firmware</a> &middot; <small>v03.17.00, compiled:&nbsp;Feb  4 2016/09:10:31<br/></small></div>'
-        compiled_index = result.index('compiled')
+        compiled_index = result.index(b"compiled")
         version = result[compiled_index-11:compiled_index-2]
         # info(version)
-        return version
+        return version.decode('utf-8')
         
 
     def wait(self, timeout=300):
@@ -105,8 +108,8 @@ class Firmware_Downloader(object):
         geturl = self.url + "/get.cgi?firmware_update=status"
         current_time = time.time()
         result = self.get(geturl)
-        while 'SUCCESS' not in result and (current_time-start_time) < timeout:
-            if 'ERROR' in result:
+        while b'SUCCESS' not in result and (current_time-start_time) < timeout:
+            if b'ERROR' in result:
                 info("something error, can't download firmware!!!")
                 raise FwError(result)
             time.sleep(5)
@@ -133,7 +136,7 @@ class Firmware_Downloader(object):
         reboot_cmd = self.cmd
         reboot_cmd['reboot_value'] = 'do_it'
         try:
-		    self.post(posturl, reboot_cmd)
+            self.post(posturl, reboot_cmd)
         except:
             # after reboot, controller will lost response
             info("rebooting...")
@@ -147,9 +150,9 @@ class Firmware_Downloader(object):
             try:
                 result = self.get(geturl)
             except:
-                result = "error"
+                result = b"error"
             finally:
-                if "idle" in result.lower():
+                if b"idle" in result.lower():
                     info("download successful!!!")
                     break
             eplapsed_time = time.time()
@@ -158,7 +161,7 @@ class Firmware_Downloader(object):
 def firmware_download(server, client):
     f = Firmware_Downloader(url=client, server_ip=server)
     f.get_version()
-    # f.download()
+    f.download()
     # f.wait()
     # f.reboot()
     # f.confirm()
@@ -169,4 +172,5 @@ if __name__ == '__main__':
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(('8.8.8.8', 0))  # connecting to a UDP address doesn't send packets
     local_ip = s.getsockname()[0]
-    firmware_download(local_ip, 'http://10.208.7.168')
+    print(local_ip)
+    firmware_download(local_ip, 'http://10.208.32.133')
