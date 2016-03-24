@@ -1,0 +1,6 @@
+site_name: fw_upgrader
+pages:
+- [index.md, Home]
+- [faq.md, FAQ]
+theme: readthedocs
+docs_dir: '.'
