@@ -28,11 +28,11 @@ It will then automatically run a tftp server inside and then simulate above step
 
 - Create a new folder **MPC** inside and copy cu362_firmware.bin into this MPC folder.
     
-![](doc/image/screenshot1.png)
+![](docs/image/screenshot1.png)
 
 ### PREREQUISITES
 
-There are some settings needed before start to use fw_upgrader. Please read [settings](settings.md).
+There are some settings needed before start to use fw_upgrader. Please read [setting](setting.md).
 
 ### USAGE
 
@@ -42,11 +42,11 @@ Resume that DC is using DHCP to get ip address and ip is "10.208.32.125".
 
 - Run this command: `fw_upgrader.exe -c 10.208.32.125`. First time to run this command, a windows security alert pops up, please mark all checkbox and click "Allow access".
 
-![](doc/image/screenshot2.png)
+![](docs/image/screenshot2.png)
 
 - If everthing is OK, you can get finally result as below screenshot.
 
-![](doc/image/screenshot3.png)
+![](docs/image/screenshot3.png)
 
 ### ARGUMENTS
 

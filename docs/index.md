@@ -32,7 +32,7 @@ It will then automatically run a tftp server inside and then simulate above step
 
 ### PREREQUISITES
 
-There are some settings needed before start to use fw_upgrader. Please read [settings](settings.md).
+There are some settings needed before start to use fw_upgrader. Please read [setting](setting.md).
 
 ### USAGE
 
