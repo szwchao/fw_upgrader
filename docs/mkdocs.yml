@@ -1,6 +1,7 @@
 site_name: fw_upgrader
 pages:
 - [index.md, Home]
+- [setting.md, Setting]
 - [faq.md, FAQ]
 theme: readthedocs
 docs_dir: '.'

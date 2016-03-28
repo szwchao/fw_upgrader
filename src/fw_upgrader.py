@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-
 import os, sys, re
 import socket
 import threading
 import logging
 from .lib.progressbar import Bar, ETA, FileTransferSpeed, Percentage, ProgressBar, RotatingMarker
-from .firmware import Firmware_Downloader
+from .firmware import Firmware_Downloader, warning, info
 
 py3 = sys.version_info[0] >= 3
 if py3:
@@ -13,8 +12,6 @@ if py3:
 else:
     from .lib.tftpy2 import setLogLevel, TftpServer 
 
-def comment(str):
-    print(str)
 
 class MyError(Exception):
     pass
@@ -23,13 +20,13 @@ def fw_upgrader(path, server_ip, client_ip, timeout=10, web_response_timeout=20,
     setLogLevel(loglevel)
     checkip(server_ip)
     checkip(client_ip)
-    comment("server ip: %s" % (server_ip))
-    comment("controller ip: %s" % (client_ip))
+    info("server ip: %s" % (server_ip))
+    info("controller ip: %s" % (client_ip))
 
     f = Firmware_Downloader(url=client_ip, server_ip=server_ip, response_timeout = web_response_timeout)
-    comment('Old firmware version is: ' + f.get_version())
+    info('old firmware version is: ' + f.get_version())
 
-    widgets = ['Transferring: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ', FileTransferSpeed()]
+    widgets = ['transferring: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ', FileTransferSpeed()]
     pbar = ProgressBar(widgets=widgets, maxval=3670000).start()
 
     server = TftpServer(path, hook=pbar.update)
@@ -43,16 +40,16 @@ def fw_upgrader(path, server_ip, client_ip, timeout=10, web_response_timeout=20,
         if reboot:
             f.reboot()
             f.confirm()
-            comment('New firmware version is: ' + f.get_version())
+            info('new firmware version is: ' + f.get_version())
         else:
-            comment('Download complete, please reboot!')
+            info('download complete, please reboot!')
     finally:
         server.stop(now=False)
         server_thread.join()
 
 def checkip(ip):
     if not re.match('^(([01]?\d\d?|2[0-4]\d|25[0-5])\.){3}([01]?\d\d?|2[0-4]\d|25[0-5])$', ip):
-        raise MyError('Not a valid ip address!')
+        raise MyError('not a valid ip address!')
 
 def guess_local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

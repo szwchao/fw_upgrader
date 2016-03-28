@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
 import os, sys
+import ctypes
 import time
 import socket
 
@@ -13,10 +13,39 @@ except ImportError:#python3
     from urllib.parse import urlencode as urlencode
     import urllib.request as request
 
+# Constants from the Windows API
+STD_OUTPUT_HANDLE = -11
+FOREGROUND_RED    = 0x0004 # text color contains red.
+FOREGROUND_PURPLE    = 0x0005 # text color contains purple.
+FOREGROUND_YELLOW    = 0x0006 # text color contains yellow.
+FOREGROUND_WHITE    = 0x0007 # text color contains white.
+FOREGROUND_GRAY    = 0x0008 # text color contains gray.
+FOREGROUND_BLUE    = 0x0009 # text color contains blue.
+FOREGROUND_GREEN    = 0x000a # text color contains green.
+
+def get_csbi_attributes(handle):
+    # Based on IPython's winconsole.py, written by Alexander Belchenko
+    import struct
+    csbi = ctypes.create_string_buffer(22)
+    res = ctypes.windll.kernel32.GetConsoleScreenBufferInfo(handle, csbi)
+    assert res
+
+    (bufx, bufy, curx, cury, wattr,
+    left, top, right, bottom, maxx, maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
+    return wattr
+
+handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
+reset = get_csbi_attributes(handle)
+
 def info(str):
-    # print('\033[31m' + str) # red
-    # print('\033[30m') # and reset to default color
+    ctypes.windll.kernel32.SetConsoleTextAttribute(handle, FOREGROUND_GREEN)
     print(str)
+    ctypes.windll.kernel32.SetConsoleTextAttribute(handle, reset)
+
+def warning(str):
+    ctypes.windll.kernel32.SetConsoleTextAttribute(handle, FOREGROUND_RED)
+    print(str)
+    ctypes.windll.kernel32.SetConsoleTextAttribute(handle, reset)
 
 class FwError(Exception):
     def __init__(self, message):
@@ -53,9 +82,6 @@ class Firmware_Downloader(object):
         binary_data = data.encode('utf-8')
         req = request.Request(posturl, binary_data)
         response = request.urlopen(req, timeout=3)
-        # data = urlencode(params)
-        # req = request.Request(posturl, data)
-        # response = request.urlopen(req, timeout=self.response_timeout)
 
     def get(self, url):
         '''
@@ -110,7 +136,7 @@ class Firmware_Downloader(object):
         result = self.get(geturl)
         while b'SUCCESS' not in result and (current_time-start_time) < timeout:
             if b'ERROR' in result:
-                info("something error, can't download firmware!!!")
+                warning("something error, can't download firmware!!!")
                 raise FwError(result)
             time.sleep(5)
             current_time = time.time()
@@ -139,7 +165,7 @@ class Firmware_Downloader(object):
             self.post(posturl, reboot_cmd)
         except:
             # after reboot, controller will lost response
-            info("rebooting...")
+            warning("rebooting...")
 
     def confirm(self):
         ''' Poll request from url after reboot to confirm that firmware upgrade is complete.  '''

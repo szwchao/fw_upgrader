@@ -4,3 +4,5 @@ backup/
 build/
 dist/
 MPC/
+/fw_upgrader.spec
+*.bat

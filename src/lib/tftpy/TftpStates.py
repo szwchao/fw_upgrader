@@ -76,6 +76,7 @@ class TftpContext(object):
         self.packethook = None
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.settimeout(timeout)
+        self.timeout = timeout
         self.state = None
         self.next_block = 0
         self.factory = TftpPacketFactory()
@@ -105,7 +106,7 @@ class TftpContext(object):
     def checkTimeout(self, now):
         """Compare current time with last_update time, and raise an exception
         if we're over SOCK_TIMEOUT time."""
-        if now - self.last_update > SOCK_TIMEOUT:
+        if now - self.last_update > self.timeout:
             raise TftpException("Timeout waiting for traffic")
 
     def start(self):
