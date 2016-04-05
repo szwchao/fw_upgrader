@@ -16,14 +16,16 @@ else:
 class MyError(Exception):
     pass
 
-def fw_upgrader(path, server_ip, client_ip, timeout=10, web_response_timeout=20, reboot=True, loglevel=logging.NOTSET):
+def fw_upgrader(path, server_ip, client_ip, route_ip=None, timeout=10, web_response_timeout=20, reboot=True, loglevel=logging.NOTSET):
     setLogLevel(loglevel)
+    route_ip = route_ip if route_ip else server_ip
     checkip(server_ip)
     checkip(client_ip)
     info("server ip: %s" % (server_ip))
     info("controller ip: %s" % (client_ip))
+    info("route ip: %s" % (route_ip))
 
-    f = Firmware_Downloader(url=client_ip, server_ip=server_ip, response_timeout = web_response_timeout)
+    f = Firmware_Downloader(url=client_ip, server_ip=route_ip, response_timeout = web_response_timeout)
     info('old firmware version is: ' + f.get_version())
 
     widgets = ['transferring: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ', FileTransferSpeed()]
@@ -52,7 +54,15 @@ def checkip(ip):
         raise MyError('not a valid ip address!')
 
 def guess_local_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(('8.8.8.8', 0))  # connecting to a UDP address doesn't send packets
-    local_ip = s.getsockname()[0]
+    local_ip = socket.gethostbyname(socket.gethostname())
     return local_ip
+
+def guess_eth1_ip():
+    ip = None
+    local_ip = guess_local_ip()
+    ip_list = socket.gethostbyname_ex(socket.gethostname())
+    lst = [l for l in ip_list if local_ip in l][0]
+    for i in lst:
+        if i.startswith('192.168.'):
+            ip = i
+    return ip

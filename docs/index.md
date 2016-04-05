@@ -58,9 +58,12 @@ Optional arguments:
 | -p, --path                 | path to the directory which contains MPC folder and firmware bin file inside |
 | -s, --server               | server ip                                                                    |
 | -c, --controller           | controller ip                                                                |
+| -r, --route_ip             | route ip, same as server ip if not set                                       |
 | -l, --loglevel             | log level, 0=no log, 1=info, 2=debug                                         |
 | -t, --timeout              | timeout for tftp server, default=20s                                         |
 | -w, --web_response_timeout | timeout for web response, default=20s                                        |
 | -n, --noreboot             | enable this to skip reboot                                                   |
 
-**Note:** Only -c/--controller is force required. If you don't specify server ip, fw_upgrader will auto get ip for you, but if you have more than 2 ip(for example, an additional usb ethernet card installed), please add -s/--server argument when you want to use usb ethernet card.
+**Note:**
+- Only *-c/--controller* is force required.
+- If you don't specify server ip, fw_upgrader will auto get ip for you, but if you have more than 2 ip(for example, an additional usb ethernet card installed), please add *-s/--server* argument when you want to use usb ethernet card.

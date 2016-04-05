@@ -15,13 +15,8 @@ except ImportError:#python3
 
 # Constants from the Windows API
 STD_OUTPUT_HANDLE = -11
-FOREGROUND_RED    = 0x0004 # text color contains red.
-FOREGROUND_PURPLE    = 0x0005 # text color contains purple.
-FOREGROUND_YELLOW    = 0x0006 # text color contains yellow.
-FOREGROUND_WHITE    = 0x0007 # text color contains white.
-FOREGROUND_GRAY    = 0x0008 # text color contains gray.
-FOREGROUND_BLUE    = 0x0009 # text color contains blue.
-FOREGROUND_GREEN    = 0x000a # text color contains green.
+FOREGROUND_RED    = 0x000c # text color contains red.
+FOREGROUND_GREEN    = 0x0002 # text color contains dark green.
 
 def get_csbi_attributes(handle):
     # Based on IPython's winconsole.py, written by Alexander Belchenko
@@ -183,20 +178,31 @@ class Firmware_Downloader(object):
                     break
             eplapsed_time = time.time()
 
+    def get_dhcp(self):
+        geturl = self.url + "/ipconfig.html"
+        result = self.get(geturl)
+        if b'DHCP status:</td>\r\n  <td width="25px"> </td>\r\n  <td>Enabled' in result:
+            print("DHCP enabled")
+        else:
+            print("DHCP disabled")
+        return result
+
 
 def firmware_download(server, client):
     f = Firmware_Downloader(url=client, server_ip=server)
-    f.get_version()
-    f.download()
+    # f.get_version()
+    # f.download()
     # f.wait()
     # f.reboot()
     # f.confirm()
+    f.get_dhcp()
 
 
 if __name__ == '__main__':
     # get local ip
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(('8.8.8.8', 0))  # connecting to a UDP address doesn't send packets
-    local_ip = s.getsockname()[0]
-    print(local_ip)
-    firmware_download(local_ip, 'http://10.208.32.133')
+    # s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    # s.connect(('8.8.8.8', 0))  # connecting to a UDP address doesn't send packets
+    # local_ip = s.getsockname()[0]
+    # print(local_ip)
+    # firmware_download('192.168.0.1', '10.208.32.125')
+    firmware_download('192.168.0.1', '192.168.0.2')
