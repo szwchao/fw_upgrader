@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-import os, sys, re
+import os
+import sys
+import re
 import socket
 import threading
 import logging
@@ -8,13 +10,14 @@ from .firmware import Firmware_Downloader, warning, info
 
 py3 = sys.version_info[0] >= 3
 if py3:
-    from .lib.tftpy import setLogLevel, TftpServer 
+    from .lib.tftpy import setLogLevel, TftpServer
 else:
-    from .lib.tftpy2 import setLogLevel, TftpServer 
+    from .lib.tftpy2 import setLogLevel, TftpServer
 
 
 class MyError(Exception):
     pass
+
 
 def fw_upgrader(path, server_ip, client_ip, route_ip=None, timeout=10, web_response_timeout=20, reboot=True, loglevel=logging.NOTSET):
     setLogLevel(loglevel)
@@ -23,9 +26,10 @@ def fw_upgrader(path, server_ip, client_ip, route_ip=None, timeout=10, web_respo
     checkip(client_ip)
     info("server ip: %s" % (server_ip))
     info("controller ip: %s" % (client_ip))
-    info("route ip: %s" % (route_ip))
+    if route_ip is not server_ip:
+        info("route ip: %s" % (route_ip))
 
-    f = Firmware_Downloader(url=client_ip, server_ip=route_ip, response_timeout = web_response_timeout)
+    f = Firmware_Downloader(url=client_ip, server_ip=route_ip, response_timeout=web_response_timeout)
     info('old firmware version is: ' + f.get_version())
 
     widgets = ['transferring: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ', FileTransferSpeed()]
@@ -49,13 +53,16 @@ def fw_upgrader(path, server_ip, client_ip, route_ip=None, timeout=10, web_respo
         server.stop(now=False)
         server_thread.join()
 
+
 def checkip(ip):
     if not re.match('^(([01]?\d\d?|2[0-4]\d|25[0-5])\.){3}([01]?\d\d?|2[0-4]\d|25[0-5])$', ip):
         raise MyError('not a valid ip address!')
 
+
 def guess_local_ip():
     local_ip = socket.gethostbyname(socket.gethostname())
     return local_ip
+
 
 def guess_eth1_ip():
     ip = None

@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
-import os, sys
+import os
+import sys
 import ctypes
 import time
 import socket
 
 if sys.version_info < (2, 7):
     raise RuntimeError('At least Python 2.7 is required')
-try:#python2
+try:  # python2
     from urllib import urlencode as urlencode
     import urllib2 as request
-except ImportError:#python3
+except ImportError:  # python3
     from urllib.parse import urlencode as urlencode
     import urllib.request as request
 
 # Constants from the Windows API
 STD_OUTPUT_HANDLE = -11
-FOREGROUND_RED    = 0x000c # text color contains red.
-FOREGROUND_GREEN    = 0x0002 # text color contains dark green.
+FOREGROUND_RED = 0x000c  # text color contains red.
+FOREGROUND_GREEN = 0x0002  # text color contains dark green.
+
 
 def get_csbi_attributes(handle):
     # Based on IPython's winconsole.py, written by Alexander Belchenko
@@ -25,31 +27,35 @@ def get_csbi_attributes(handle):
     res = ctypes.windll.kernel32.GetConsoleScreenBufferInfo(handle, csbi)
     assert res
 
-    (bufx, bufy, curx, cury, wattr,
-    left, top, right, bottom, maxx, maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
+    (bufx, bufy, curx, cury, wattr, left, top, right, bottom, maxx, maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
     return wattr
 
 handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
 reset = get_csbi_attributes(handle)
+
 
 def info(str):
     ctypes.windll.kernel32.SetConsoleTextAttribute(handle, FOREGROUND_GREEN)
     print(str)
     ctypes.windll.kernel32.SetConsoleTextAttribute(handle, reset)
 
+
 def warning(str):
     ctypes.windll.kernel32.SetConsoleTextAttribute(handle, FOREGROUND_RED)
     print(str)
     ctypes.windll.kernel32.SetConsoleTextAttribute(handle, reset)
 
+
 class FwError(Exception):
+
     def __init__(self, message):
         self.message = message
+
 
 class Firmware_Downloader(object):
     username = 'admin'
     password = 'admin'
-    cmd = {'form_id':'firmware_update', 'reboot_value':'', 'tftp_server_ip_address':'192.168.0.1', 'submit': 'Start', 'reboot': 'Reboot'}
+    cmd = {'form_id': 'firmware_update', 'reboot_value': '', 'tftp_server_ip_address': '192.168.0.1', 'submit': 'Start', 'reboot': 'Reboot'}
 
     def __init__(self, url=None, server_ip='192.168.0.1', response_timeout=20):
         self.response_timeout = response_timeout
@@ -102,7 +108,7 @@ class Firmware_Downloader(object):
             except:
                 found = False
         if found:
-            url = begin_ip + str(i-1)
+            url = begin_ip + str(i - 1)
             info("found correct ip: %s" % url)
         else:
             raise FwError("can't find controller's ip")
@@ -113,10 +119,9 @@ class Firmware_Downloader(object):
         result = self.get(url)
         # '<div style="border-bottom:2px solid #D3D3D3; padding:0px 0px 5px 0px; margin-bottom:15px"><a href="index.html">Home</a> &middot; <a href="firmware_update.html">Firmware</a> &middot; <small>v03.17.00, compiled:&nbsp;Feb  4 2016/09:10:31<br/></small></div>'
         compiled_index = result.index(b"compiled")
-        version = result[compiled_index-11:compiled_index-2]
+        version = result[compiled_index - 11:compiled_index - 2]
         # info(version)
         return version.decode('utf-8')
-        
 
     def wait(self, timeout=300):
         '''
@@ -129,7 +134,7 @@ class Firmware_Downloader(object):
         geturl = self.url + "/get.cgi?firmware_update=status"
         current_time = time.time()
         result = self.get(geturl)
-        while b'SUCCESS' not in result and (current_time-start_time) < timeout:
+        while b'SUCCESS' not in result and (current_time - start_time) < timeout:
             if b'ERROR' in result:
                 warning("something error, can't download firmware!!!")
                 raise FwError(result)
@@ -138,7 +143,7 @@ class Firmware_Downloader(object):
             result = self.get(geturl)
             # info(result)
 
-        if (current_time-start_time) >= timeout:
+        if (current_time - start_time) >= timeout:
             raise FwError("Timeout!!!")
 
         # info("Download complete, elapsed time: %ds" % (current_time-start_time))

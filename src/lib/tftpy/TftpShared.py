@@ -12,23 +12,21 @@ TIMEOUT_RETRIES = 5
 DEF_TFTP_PORT = 69
 
 # Initialize the logger.
-def setup_logger(logger_name, log_file, level=logging.DEBUG):
+def setup_logger(logger_name, log_file=None, level=logging.DEBUG):
     l = logging.getLogger(logger_name)
     formatter = logging.Formatter('%(asctime)s %(filename)s [line:%(lineno)d]    %(message)s')
-    fileHandler = logging.FileHandler(log_file, mode='w', encoding='UTF-8')
-    fileHandler.setFormatter(formatter)
     streamHandler = logging.StreamHandler()
     streamHandler.setFormatter(formatter)
 
     l.setLevel(level)
-    l.addHandler(fileHandler)
+    # l.addHandler(fileHandler)
     # l.addHandler(streamHandler)  
 
 # Initialize the logger.
 # logging.basicConfig(filename='log.log', filemode='w')
 # The logger used by this library. Feel free to clobber it with your own, if you like, as
 # long as it conforms to Python's logging.
-setup_logger('tftpy', 'tftpy.log')
+setup_logger('tftpy')
 # setup_logger('log2', r'C:\temp\log2.log')
 log = logging.getLogger('tftpy')
 
@@ -44,6 +42,11 @@ def setLogLevel(level):
     """This function is a utility function for setting the internal log level.
     The log level defaults to logging.NOTSET, so unwanted output to stdout is
     not created."""
+    if level != logging.NOTSET:
+        formatter = logging.Formatter('%(asctime)s %(filename)s [line:%(lineno)d]    %(message)s')
+        fileHandler = logging.FileHandler('tftpy.log', mode='w', encoding='UTF-8')
+        fileHandler.setFormatter(formatter)
+        log.addHandler(fileHandler)
     log.setLevel(level)
 
 class TftpErrors(object):

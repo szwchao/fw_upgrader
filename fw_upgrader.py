@@ -6,6 +6,7 @@ from src.fw_upgrader import fw_upgrader, guess_local_ip
 
 __VERSION__ = "0.2"
 
+
 def main(args):
     if args.server:
         server_ip = args.server
@@ -25,7 +26,7 @@ def main(args):
 
 if __name__ == '__main__':
     des = 'A tool used to download firmware to Cu3x2.'
-    parser = argparse.ArgumentParser(description = des)
+    parser = argparse.ArgumentParser(description=des)
     parser.add_argument('-v', '--version', action='version', version=__VERSION__)
     parser.add_argument('-p', '--path', type=str, default='.', help='path to the directory which contains MPC folder and firmware bin file inside')
     parser.add_argument('-s', '--server', type=str, help='server ip')
@@ -35,6 +36,6 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--timeout', type=int, default=20, help='timeout for tftp server, default=20s')
     parser.add_argument('-w', '--web_response_timeout', type=int, default=20, help='timeout for web response, default=20s')
     parser.add_argument('-n', '--noreboot', action='store_false', help='enable this to skip reboot')
- 
-    args = parser.parse_args();
+
+    args = parser.parse_args()
     main(args)
