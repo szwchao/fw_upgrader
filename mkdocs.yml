@@ -1,0 +1,10 @@
+site_name: fw_upgrader
+site_description: A tool used to download firmware into Cu3x2 products.
+site_author: Chao Wang
+theme: readthedocs
+docs_dir: '.'
+
+pages:
+ - [index.md, Home]
+ - [setting.md, Setting]
+ - [faq.md, FAQ]

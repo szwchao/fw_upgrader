@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Chao Wang">
+  
+  <title>Setting - fw_upgrader</title>
+  
+
+  <link rel="shortcut icon" href="../img/favicon.ico">
+
+  
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Setting";
+    var mkdocs_page_input_path = "setting.md";
+    var mkdocs_page_url = "/setting/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script>
+  <script src="../js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> fw_upgrader</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="..">Home</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Setting</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#firewall-settings">Firewall settings</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#protocol-settings">Protocol settings</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#port-settings">Port settings</a></li>
+                
+            
+            </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../faq/">FAQ</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">fw_upgrader</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Setting</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="firewall-settings">Firewall settings</h2>
+<ol>
+<li>Open up, Start -&gt; Control panel -&gt; Windows firewall, and choose "Allow a program or feature…"
+ <img alt="" src="../image/firewall1.png" /></li>
+<li>Mark <strong>all 3 checkbox</strong> under fw_upgrader and press "OK" (Login may be required under "Change settings")
+ <img alt="" src="../image/firewall2.png" /></li>
+</ol>
+<h2 id="protocol-settings">Protocol settings</h2>
+<ol>
+<li>Open up, Start -&gt; Control panel -&gt; Administrative Tools -&gt; Windows firewall with Advanced Security</li>
+<li>Click -&gt; Inbound Rules -&gt; New Rule
+ <img alt="" src="../image/rule1.png" /></li>
+<li>Choose custom and click next
+ <img alt="" src="../image/rule2.png" /></li>
+<li>Enter "Protocol and Ports" and set the Protocol type to ICMPv4 and click customize
+ <img alt="" src="../image/rule3.png" /></li>
+<li>Choose Specific ICMP types, check mark Echo Request, click OK and click nex
+ <img alt="" src="../image/rule4.png" /></li>
+<li>Choose Any IP address in both and click next
+ <img alt="" src="../image/rule5.png" /></li>
+<li>Choose Allow the connection and click next
+ <img alt="" src="../image/rule6.png" /></li>
+<li>Check mark all three and click next
+ <img alt="" src="../image/rule7.png" /></li>
+<li>Type in a name e.g. "Echo Request" and click finish</li>
+</ol>
+<h2 id="port-settings">Port settings</h2>
+<p>Now the first rule is ready and the second rule can be configured</p>
+<ol>
+<li>Open up, Start -&gt; Control panel -&gt; Administrative Tools -&gt; Windows firewall with Advanced Security</li>
+<li>Click -&gt; Inbound Rules -&gt; New Rule
+ <img alt="" src="../image/port1.png" /></li>
+<li>Choose port and click next
+ <img alt="" src="../image/port2.png" /></li>
+<li>Choose UDP and Specific local ports. Set it to 69 and click next
+ <img alt="" src="../image/port3.png" /></li>
+<li>Choose allow the connection and click next
+ <img alt="" src="../image/port4.png" /></li>
+<li>Check mark all three and click next
+ <img alt="" src="../image/port5.png" /></li>
+<li>Type in a name e.g. "TFTP UDP 69" and click finish</li>
+</ol>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../faq/" class="btn btn-neutral float-right" title="FAQ">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../faq/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>

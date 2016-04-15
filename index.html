@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A tool used to download firmware into Cu3x2 products.">
+  <meta name="author" content="Chao Wang">
+  
+  <title>fw_upgrader</title>
+  
+
+  <link rel="shortcut icon" href="./img/favicon.ico">
+
+  
+  <link rel="stylesheet" href="./css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="./css/highlight.css">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "None";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = "/";
+  </script>
+  
+  <script src="./js/jquery-2.1.1.min.js"></script>
+  <script src="./js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="./js/highlight.pack.js"></script>
+  <script src="./js/theme.js"></script> 
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> fw_upgrader</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href=".">Home</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#features">FEATURES</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#description">DESCRIPTION</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#installation">INSTALLATION</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#prerequisites">PREREQUISITES</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#usage">USAGE</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#arguments">ARGUMENTS</a></li>
+                
+            
+            </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="setting/">Setting</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="faq/">FAQ</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">fw_upgrader</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Home</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>fw_upgrader is a tool which used to download firmware into Cu3x2 products.</p>
+<p><a href="http://fw-upgrader.readthedocs.org/">Online document</a></p>
+<h2 id="features">FEATURES</h2>
+<ul>
+<li>Auto download process based on web interface provided by Cu3x2.</li>
+<li>Internal TFTP server.</li>
+</ul>
+<h2 id="description">DESCRIPTION</h2>
+<p>Normally, if you want to download firmware into Cu3x2 products, you need to:</p>
+<ol>
+<li>Run a 3rd party tftp tool such as <strong>TFTP64.exe</strong>.</li>
+<li>Specify the MPC folder.</li>
+<li>Open webpage, launch java applet and wait a minute to see the home page.</li>
+<li>Go to download page, change the server address, and then click start button.</li>
+<li>When downloading finished, you also need to click reboot button and wait a minute to refresh this page.</li>
+<li>Verify the firmware version.</li>
+</ol>
+<p>Use this tool, just one command:</p>
+<pre><code class="bash">fw_upgrader -c 10.208.32.125
+</code></pre>
+
+<p>It will then automatically run a tftp server inside and then simulate above steps in webpage, if everything is OK, a progress bar will show. When finished, it will auto reboot and show the new firmware version.</p>
+<h2 id="installation">INSTALLATION</h2>
+<ul>
+<li>
+<p>Download fw_upgrader into any folder in your PC. (For example, c:\fw_upgrader)</p>
+</li>
+<li>
+<p>Create a new folder <strong>MPC</strong> inside and copy cu362_firmware.bin into MPC folder.</p>
+</li>
+</ul>
+<p><img alt="" src="./image/screenshot1.png" /></p>
+<h2 id="prerequisites">PREREQUISITES</h2>
+<p>There are some settings needed before start to use fw_upgrader. Please read <a href="setting/">setting</a>.</p>
+<h2 id="usage">USAGE</h2>
+<p>Resume that Cu3x2 product on your hand is using DHCP to get IP address and IP is "10.208.32.125".</p>
+<ul>
+<li>
+<p>Open cmd window and change directory to this folder(c:\fw_upgrader).</p>
+</li>
+<li>
+<p>Run this command: <code>fw_upgrader.exe -c 10.208.32.125</code>. First time to run this command, <strong>Windows Security Alert</strong> pops up, please mark all checkbox and click "Allow access".</p>
+</li>
+</ul>
+<p><img alt="" src="./image/screenshot2.png" /></p>
+<ul>
+<li>fw_upgrader start to download firmware automatically, eventually you can get result as below screenshot.</li>
+</ul>
+<p><img alt="" src="./image/screenshot3.png" /></p>
+<h2 id="arguments">ARGUMENTS</h2>
+<p>Optional arguments:</p>
+<table>
+<thead>
+<tr>
+<th>argument</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-h, --help</td>
+<td>show this help message and exit</td>
+</tr>
+<tr>
+<td>-p, --path</td>
+<td>path to the directory which contains MPC folder and firmware bin file inside</td>
+</tr>
+<tr>
+<td>-s, --server</td>
+<td>server IP</td>
+</tr>
+<tr>
+<td>-c, --controller</td>
+<td>controller IP</td>
+</tr>
+<tr>
+<td>-r, --route_ip</td>
+<td>route IP, same as server IP if not set</td>
+</tr>
+<tr>
+<td>-l, --loglevel</td>
+<td>log level, 0=no log, 1=info, 2=debug</td>
+</tr>
+<tr>
+<td>-t, --timeout</td>
+<td>timeout for tftp server, default=20s</td>
+</tr>
+<tr>
+<td>-w, --web_response_timeout</td>
+<td>timeout for web response, default=20s</td>
+</tr>
+<tr>
+<td>-n, --noreboot</td>
+<td>enable this to skip reboot</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong></p>
+<ul>
+<li>Only <em>-c/--controller</em> is force required.</li>
+<li>If you don't set server IP, fw_upgrader will auto get IP for you, but if you have more than 2 IP(for example, an additional USB Ethernet card is installed), please add <em>-s/--server</em> argument to specify which IP you want to use.</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="setting/" class="btn btn-neutral float-right" title="Setting">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+        <span style="margin-left: 15px"><a href="setting/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 0.15.3
+Build Date UTC : 2016-04-15 06:54:40.728030
+-->

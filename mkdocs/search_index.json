@@ -1,0 +1,64 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "fw_upgrader is a tool which used to download firmware into Cu3x2 products.\n\n\nOnline document\n\n\nFEATURES\n\n\n\n\nAuto download process based on web interface provided by Cu3x2.\n\n\nInternal TFTP server.\n\n\n\n\nDESCRIPTION\n\n\nNormally, if you want to download firmware into Cu3x2 products, you need to:\n\n\n\n\nRun a 3rd party tftp tool such as \nTFTP64.exe\n.\n\n\nSpecify the MPC folder.\n\n\nOpen webpage, launch java applet and wait a minute to see the home page.\n\n\nGo to download page, change the server address, and then click start button.\n\n\nWhen downloading finished, you also need to click reboot button and wait a minute to refresh this page.\n\n\nVerify the firmware version.\n\n\n\n\nUse this tool, just one command:\n\n\nfw_upgrader -c 10.208.32.125\n\n\n\n\nIt will then automatically run a tftp server inside and then simulate above steps in webpage, if everything is OK, a progress bar will show. When finished, it will auto reboot and show the new firmware version.\n\n\nINSTALLATION\n\n\n\n\n\n\nDownload fw_upgrader into any folder in your PC. (For example, c:\\fw_upgrader)\n\n\n\n\n\n\nCreate a new folder \nMPC\n inside and copy cu362_firmware.bin into MPC folder.\n\n\n\n\n\n\n\n\nPREREQUISITES\n\n\nThere are some settings needed before start to use fw_upgrader. Please read \nsetting\n.\n\n\nUSAGE\n\n\nResume that Cu3x2 product on your hand is using DHCP to get IP address and IP is \"10.208.32.125\".\n\n\n\n\n\n\nOpen cmd window and change directory to this folder(c:\\fw_upgrader).\n\n\n\n\n\n\nRun this command: \nfw_upgrader.exe -c 10.208.32.125\n. First time to run this command, \nWindows Security Alert\n pops up, please mark all checkbox and click \"Allow access\".\n\n\n\n\n\n\n\n\n\n\nfw_upgrader start to download firmware automatically, eventually you can get result as below screenshot.\n\n\n\n\n\n\nARGUMENTS\n\n\nOptional arguments:\n\n\n\n\n\n\n\n\nargument\n\n\ndescription\n\n\n\n\n\n\n\n\n\n\n-h, --help\n\n\nshow this help message and exit\n\n\n\n\n\n\n-p, --path\n\n\npath to the directory which contains MPC folder and firmware bin file inside\n\n\n\n\n\n\n-s, --server\n\n\nserver IP\n\n\n\n\n\n\n-c, --controller\n\n\ncontroller IP\n\n\n\n\n\n\n-r, --route_ip\n\n\nroute IP, same as server IP if not set\n\n\n\n\n\n\n-l, --loglevel\n\n\nlog level, 0=no log, 1=info, 2=debug\n\n\n\n\n\n\n-t, --timeout\n\n\ntimeout for tftp server, default=20s\n\n\n\n\n\n\n-w, --web_response_timeout\n\n\ntimeout for web response, default=20s\n\n\n\n\n\n\n-n, --noreboot\n\n\nenable this to skip reboot\n\n\n\n\n\n\n\n\nNote:\n\n\n\n\nOnly \n-c/--controller\n is force required.\n\n\nIf you don't set server IP, fw_upgrader will auto get IP for you, but if you have more than 2 IP(for example, an additional USB Ethernet card is installed), please add \n-s/--server\n argument to specify which IP you want to use.",
+            "title": "Home"
+        },
+        {
+            "location": "/#features",
+            "text": "Auto download process based on web interface provided by Cu3x2.  Internal TFTP server.",
+            "title": "FEATURES"
+        },
+        {
+            "location": "/#description",
+            "text": "Normally, if you want to download firmware into Cu3x2 products, you need to:   Run a 3rd party tftp tool such as  TFTP64.exe .  Specify the MPC folder.  Open webpage, launch java applet and wait a minute to see the home page.  Go to download page, change the server address, and then click start button.  When downloading finished, you also need to click reboot button and wait a minute to refresh this page.  Verify the firmware version.   Use this tool, just one command:  fw_upgrader -c 10.208.32.125  It will then automatically run a tftp server inside and then simulate above steps in webpage, if everything is OK, a progress bar will show. When finished, it will auto reboot and show the new firmware version.",
+            "title": "DESCRIPTION"
+        },
+        {
+            "location": "/#installation",
+            "text": "Download fw_upgrader into any folder in your PC. (For example, c:\\fw_upgrader)    Create a new folder  MPC  inside and copy cu362_firmware.bin into MPC folder.",
+            "title": "INSTALLATION"
+        },
+        {
+            "location": "/#prerequisites",
+            "text": "There are some settings needed before start to use fw_upgrader. Please read  setting .",
+            "title": "PREREQUISITES"
+        },
+        {
+            "location": "/#usage",
+            "text": "Resume that Cu3x2 product on your hand is using DHCP to get IP address and IP is \"10.208.32.125\".    Open cmd window and change directory to this folder(c:\\fw_upgrader).    Run this command:  fw_upgrader.exe -c 10.208.32.125 . First time to run this command,  Windows Security Alert  pops up, please mark all checkbox and click \"Allow access\".      fw_upgrader start to download firmware automatically, eventually you can get result as below screenshot.",
+            "title": "USAGE"
+        },
+        {
+            "location": "/#arguments",
+            "text": "Optional arguments:     argument  description      -h, --help  show this help message and exit    -p, --path  path to the directory which contains MPC folder and firmware bin file inside    -s, --server  server IP    -c, --controller  controller IP    -r, --route_ip  route IP, same as server IP if not set    -l, --loglevel  log level, 0=no log, 1=info, 2=debug    -t, --timeout  timeout for tftp server, default=20s    -w, --web_response_timeout  timeout for web response, default=20s    -n, --noreboot  enable this to skip reboot     Note:   Only  -c/--controller  is force required.  If you don't set server IP, fw_upgrader will auto get IP for you, but if you have more than 2 IP(for example, an additional USB Ethernet card is installed), please add  -s/--server  argument to specify which IP you want to use.",
+            "title": "ARGUMENTS"
+        },
+        {
+            "location": "/setting/",
+            "text": "Firewall settings\n\n\n\n\nOpen up, Start -> Control panel -> Windows firewall, and choose \"Allow a program or feature\u2026\"\n \n\n\nMark \nall 3 checkbox\n under fw_upgrader and press \"OK\" (Login may be required under \"Change settings\")\n \n\n\n\n\nProtocol settings\n\n\n\n\nOpen up, Start -> Control panel -> Administrative Tools -> Windows firewall with Advanced Security\n\n\nClick -> Inbound Rules -> New Rule\n \n\n\nChoose custom and click next\n \n\n\nEnter \"Protocol and Ports\" and set the Protocol type to ICMPv4 and click customize\n \n\n\nChoose Specific ICMP types, check mark Echo Request, click OK and click nex\n \n\n\nChoose Any IP address in both and click next\n \n\n\nChoose Allow the connection and click next\n \n\n\nCheck mark all three and click next\n \n\n\nType in a name e.g. \"Echo Request\" and click finish\n\n\n\n\nPort settings\n\n\nNow the first rule is ready and the second rule can be configured\n\n\n\n\nOpen up, Start -> Control panel -> Administrative Tools -> Windows firewall with Advanced Security\n\n\nClick -> Inbound Rules -> New Rule\n \n\n\nChoose port and click next\n \n\n\nChoose UDP and Specific local ports. Set it to 69 and click next\n \n\n\nChoose allow the connection and click next\n \n\n\nCheck mark all three and click next\n \n\n\nType in a name e.g. \"TFTP UDP 69\" and click finish",
+            "title": "Setting"
+        },
+        {
+            "location": "/setting/#firewall-settings",
+            "text": "Open up, Start -> Control panel -> Windows firewall, and choose \"Allow a program or feature\u2026\"\n   Mark  all 3 checkbox  under fw_upgrader and press \"OK\" (Login may be required under \"Change settings\")",
+            "title": "Firewall settings"
+        },
+        {
+            "location": "/setting/#protocol-settings",
+            "text": "Open up, Start -> Control panel -> Administrative Tools -> Windows firewall with Advanced Security  Click -> Inbound Rules -> New Rule\n   Choose custom and click next\n   Enter \"Protocol and Ports\" and set the Protocol type to ICMPv4 and click customize\n   Choose Specific ICMP types, check mark Echo Request, click OK and click nex\n   Choose Any IP address in both and click next\n   Choose Allow the connection and click next\n   Check mark all three and click next\n   Type in a name e.g. \"Echo Request\" and click finish",
+            "title": "Protocol settings"
+        },
+        {
+            "location": "/setting/#port-settings",
+            "text": "Now the first rule is ready and the second rule can be configured   Open up, Start -> Control panel -> Administrative Tools -> Windows firewall with Advanced Security  Click -> Inbound Rules -> New Rule\n   Choose port and click next\n   Choose UDP and Specific local ports. Set it to 69 and click next\n   Choose allow the connection and click next\n   Check mark all three and click next\n   Type in a name e.g. \"TFTP UDP 69\" and click finish",
+            "title": "Port settings"
+        },
+        {
+            "location": "/faq/",
+            "text": "",
+            "title": "FAQ"
+        }
+    ]
+}
