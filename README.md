@@ -1,6 +1,6 @@
 This fw_upgrader is a tool which used to download firmware into Cu3x2 products.
 
-![Doc](http://fw-upgrader.readthedocs.org/)
+[Online document](http://fw-upgrader.readthedocs.org/)
 
 ### FEATURES
 - Auto download process based on web interface provided by Cu3x2.

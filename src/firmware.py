@@ -82,7 +82,7 @@ class Firmware_Downloader(object):
         data = urlencode(params)
         binary_data = data.encode('utf-8')
         req = request.Request(posturl, binary_data)
-        response = request.urlopen(req, timeout=3)
+        response = request.urlopen(req, timeout=self.response_timeout)
 
     def get(self, url):
         '''
