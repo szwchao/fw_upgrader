@@ -38,7 +38,7 @@ There are some settings needed before start to use fw_upgrader. Please read [set
 
 ## USAGE
 
-##### Scene 1
+**Scene 1**
 
 Resume that Cu3x2 product on your hand is using DHCP to get IP address and IP is "10.208.32.125".
 
@@ -58,7 +58,7 @@ fw_upgrader.exe -c 10.208.32.125
 
 ![](./image/screenshot3.png)
 
-##### Scene 2
+**Scene 2**
 
 Another scenario is that you are using USB Ethernet converter. Cu3x2 product is not using DHCP, and the IP address is `192.168.0.102`, your local IP is `192.168.0.1`.
 
