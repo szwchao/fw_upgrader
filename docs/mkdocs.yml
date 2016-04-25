@@ -7,4 +7,3 @@ docs_dir: '.'
 pages:
  - [index.md, Home]
  - [setting.md, Setting]
- - [faq.md, FAQ]

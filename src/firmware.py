@@ -54,10 +54,10 @@ class FwError(Exception):
 
 class Firmware_Downloader(object):
     username = 'admin'
-    password = 'admin'
     cmd = {'form_id': 'firmware_update', 'reboot_value': '', 'tftp_server_ip_address': '192.168.0.1', 'submit': 'Start', 'reboot': 'Reboot'}
 
-    def __init__(self, url=None, server_ip='192.168.0.1', response_timeout=20):
+    def __init__(self, url=None, server_ip='192.168.0.1', response_timeout=20, password='admin'):
+        self.password = password
         self.response_timeout = response_timeout
         # self.url = url if url else self.guess_ip()
         self.url = "http://" + url

@@ -19,7 +19,7 @@ class MyError(Exception):
     pass
 
 
-def fw_upgrader(path, server_ip, client_ip, route_ip=None, timeout=10, web_response_timeout=20, reboot=True, loglevel=logging.NOTSET):
+def fw_upgrader(path, server_ip, client_ip, route_ip=None, timeout=10, web_response_timeout=20, reboot=True, loglevel=logging.NOTSET, pwd='admin'):
     setLogLevel(loglevel)
     route_ip = route_ip if route_ip else server_ip
     checkip(server_ip)
@@ -29,7 +29,7 @@ def fw_upgrader(path, server_ip, client_ip, route_ip=None, timeout=10, web_respo
     if route_ip is not server_ip:
         info("route ip: %s" % (route_ip))
 
-    f = Firmware_Downloader(url=client_ip, server_ip=route_ip, response_timeout=web_response_timeout)
+    f = Firmware_Downloader(url=client_ip, server_ip=route_ip, response_timeout=web_response_timeout, password=pwd)
     info('old firmware version is: ' + f.get_version())
 
     widgets = ['transferring: ', Percentage(), ' ', Bar(marker=RotatingMarker()), ' ', ETA(), ' ', FileTransferSpeed()]
